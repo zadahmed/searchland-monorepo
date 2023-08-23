@@ -1,20 +1,27 @@
-import { AppDataSource } from "./data-source"
-import { User } from "./entity/User"
+import { inferAsyncReturnType, initTRPC } from "@trpc/server";
+import * as trpcExpress from "@trpc/server/adapters/express";
+import { userRouter } from "./routers/userRouter";
+import express from "express";
 
-AppDataSource.initialize().then(async () => {
+const createContext = ({
+  req,
+  res,
+}: trpcExpress.CreateExpressContextOptions) => ({});
+type Context = inferAsyncReturnType<typeof createContext>;
+const t = initTRPC.context<Context>().create();
+const appRouter = t.router({
+  users: userRouter,
+});
 
-    console.log("Inserting a new user into the database...")
-    const user = new User()
-    user.firstName = "Timber"
-    user.lastName = "Saw"
-    user.age = 25
-    await AppDataSource.manager.save(user)
-    console.log("Saved a new user with id: " + user.id)
+const app = express();
+app.use(
+  "/api",
+  trpcExpress.createExpressMiddleware({
+    router: appRouter,
+    createContext,
+  })
+);
 
-    console.log("Loading users from the database...")
-    const users = await AppDataSource.manager.find(User)
-    console.log("Loaded users: ", users)
-
-    console.log("Here you can setup and run express / fastify / any other framework.")
-
-}).catch(error => console.log(error))
+app.listen(4000, () => {
+  console.log("Server is running on http://localhost:4000/");
+});
