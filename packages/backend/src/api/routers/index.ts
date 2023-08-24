@@ -19,7 +19,7 @@ const appRouter = router({
       const user = await db.users.createUser(input.name, input.age);
       return user;
     }),
-  deleteUser: publicProcedure.input(z.number()).query(async (request) => {
+  deleteUser: publicProcedure.input(z.number()).mutation(async (request) => {
     const { input } = request;
     const user = await db.users.findUserById(input);
     if (user) {
