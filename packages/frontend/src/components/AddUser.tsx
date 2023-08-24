@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { queryClient, trpc } from "../utils/trpc";
+import {  trpc } from "../utils/trpc";
 
 const AddUser = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
 
+  const userQuery = trpc.getUsers.useQuery();
   const mutation = trpc.createUser.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries(["getUsers"]);
+      userQuery.refetch(); 
     },
   });
 
