@@ -3,7 +3,7 @@ import express from "express";
 import { AppDataSource } from "../db/utils/data-source";
 import helmet from "helmet";
 import cors from "cors";
-import appRouter from "./routers";
+import {appRouter} from "./routers";
 
 const PORT = process.env.PORT || 4000;
 

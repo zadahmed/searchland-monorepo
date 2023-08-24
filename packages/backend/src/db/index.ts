@@ -7,8 +7,8 @@ export const db = {
       return users;
     },
     findUserById: async (id: number) => userRepository.findOneBy({ id }),
-    createUser: async (name: string) => {
-      const user = userRepository.create({ name });
+    createUser: async (name: string, age:number) => {
+      const user = userRepository.create({ name, age });
       await userRepository.save(user);
       return user;
     },
