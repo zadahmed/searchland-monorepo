@@ -15,18 +15,5 @@ export const AppDataSource = new DataSource({
   synchronize: true,
   logging: false,
   entities: [User],
-  migrations: [],
-  subscribers: [],
 });
 
-
-export async function createConnection() {
-  let connection;
-  try {
-      connection = await AppDataSource.connect();
-  } catch (error) {
-      console.error('Error connecting to the database', error);
-      process.exit(1);
-  }
-  return connection;
-}
