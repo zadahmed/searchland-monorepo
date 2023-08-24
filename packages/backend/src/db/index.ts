@@ -1,5 +1,3 @@
-import { AppDataSource } from "./utils/data-source";
-import { User } from "./entity/User";
 import { userRepository } from "./repositories/userRepository"
 
 export const db = {
